@@ -65,7 +65,6 @@ Optional modes:
 ## 5 · Tech stack
 
 * **React 18 + Vite 5** – lightning‑fast dev server and small production bundles.
-* **TypeScript** throughout.
 * **Web Audio API** for sidetone & static hiss.
 * **Web Worker** for high‑precision key timing.
 * **Tailwind CSS** for styling.
@@ -77,51 +76,26 @@ Optional modes:
 
 ```bash
 # Clone the repo
-git clone https://github.com/your‑user/venona‑morse‑operator.git
-cd venona‑morse‑operator
+git clone https://github.com/jaysonvirissimo/VENONA.git
+cd VENONA
 
 # Ensure you have the latest Node (uses `asdf`)
 asdf install  # reads .tool-versions
 
 # Install dependencies
-pnpm install   # or npm / yarn
+npm install   # or npm / yarn
 
 # Start the dev server
-pnpm dev       # http://localhost:5173
+npm run dev       # http://localhost:5173
 ```
 
 ### Build & preview
 
 ```bash
-pnpm build     # output in dist/
-pnpm preview   # serve the production build locally
+npm run build     # output in dist/
+npm run preview   # serve the production build locally
 ```
 
 ### Deploy
 
-Push to `main`; GitHub Actions will build and publish automatically to
-
-```
-https://<user>.github.io/venona‑morse‑operator/
-```
-
-See `.github/workflows/deploy.yml` for details.
-
----
-
-## 7 · License & attribution
-
-* **Code** – MIT License (see `LICENSE`).
-* **VENONA texts** – public‑domain U.S. government documents courtesy of the National Security Agency and U.S. National Archives.
-
-Historical photos used in splash screens are from the Library of Congress Prints & Photographs division and are likewise public domain.
-
----
-
-## 8 · Further reading
-
-* NSA. *VENONA: Soviet Espionage and the American Response 1939‑1957.*<br>[https://www.nsa.gov/portals/70/documents/news‑features/declassified‑documents/venona](https://www.nsa.gov/portals/70/documents/news‑features/declassified‑documents/venona)
-* Haynes, J. E. & Klehr, H. *Venona: Decoding Soviet Espionage in America.* Yale Univ. Press, 1999.
-* West, N. *Mortal Crimes: The Greatest Theft in History—Soviet Penetration of the Manhattan Project.* Enigma Books, 2007.
-
-Enjoy the dots & dashes—and watch out for that FBI van!
+Push to `main` and GitHub Actions will build and publish automatically.
