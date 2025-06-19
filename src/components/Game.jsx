@@ -6,10 +6,9 @@ import { gameReducer, initial } from '../reducers/gameReducer';
 export default function Game() {
   const [state, dispatch] = useReducer(gameReducer, initial());
 
-  useMorseDecoder(msg => {
-    if (msg.t === 'letter') {
-      dispatch({ type: 'LETTER', typed: morseToChar[msg.code] || '?' });
-    }
+  useMorseDecoder((code) => {
+    const char = morseToChar[code] || '?';
+    dispatch({ type: 'LETTER', typed: char });
   });
 
   const { target, cursor, hits, total, start } = state;
@@ -21,13 +20,20 @@ export default function Game() {
 
   return (
     <div className="p-8 font-mono text-xl">
-      <p>
+      <p style={{ fontFamily: 'monospace', fontSize: '1.5rem' }}>
         {target.split('').map((ch, i) => (
-          <span key={i} className={i < cursor ? 'text-green-600' : ''}>
+            <span
+            key={i}
+            style={{
+                color:  i < cursor ? 'green' : 'black',     // already typed
+                borderBottom: i === cursor ? '2px solid red' : 'none' // cursor bar
+            }}
+            >
             {ch}
-          </span>
+            </span>
         ))}
       </p>
+
 
       <p className="mt-4">
         {done ? (

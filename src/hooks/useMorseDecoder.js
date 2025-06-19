@@ -2,22 +2,38 @@ import { useEffect } from 'react';
 
 export default function useMorseDecoder(onLetter) {
   useEffect(() => {
+    // 1 — make sure Vite bundles the worker
     const worker = new Worker(
       new URL('../workers/morseWorker.js', import.meta.url),
-      { type: 'module' }   // vite needs this
+      { type: 'module' }          // REQUIRED for Vite
     );
 
-    worker.onmessage = e => onLetter(e.data);  // { t:'letter', code:'...-' }
+    // Pipe “letter” events to caller
+    worker.onmessage = (e) => {
+      if (e.data?.t === 'letter') onLetter(e.data.code); // send ".-" etc.
+    };
 
-    const kd = e => e.code === 'Space' && worker.postMessage({ t: 'keyDown', at: performance.now() });
-    const ku = e => e.code === 'Space' && worker.postMessage({ t: 'keyUp',   at: performance.now() });
+    /* ---------- Low-level key handlers ---------- */
+    const handleKeyDown = (e) => {
+      console.log('KEY', e.code)
+      if (e.code !== 'Space' || e.repeat) return;
+      e.preventDefault();                               // stop page scroll
+      worker.postMessage({ t: 'keyDown', at: performance.now() });
+    };
 
-    window.addEventListener('keydown', kd);
-    window.addEventListener('keyup',   ku);
+    const handleKeyUp = (e) => {
+      if (e.code !== 'Space') return;
+      e.preventDefault();
+      worker.postMessage({ t: 'keyUp', at: performance.now() });
+    };
 
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    /* ---------- Cleanup ---------- */
     return () => {
-      window.removeEventListener('keydown', kd);
-      window.removeEventListener('keyup',   ku);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
       worker.terminate();
     };
   }, [onLetter]);

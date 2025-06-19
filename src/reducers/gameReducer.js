@@ -12,7 +12,7 @@ export const initial = (idx = 0) => ({
 export function gameReducer(state, action) {
   switch (action.type) {
     case 'LETTER': {
-      const typed = action.typed;
+      const { typed } = action;
       const correct = typed === state.target[state.cursor];
       return {
         ...state,
